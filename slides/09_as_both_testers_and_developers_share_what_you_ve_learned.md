@@ -17,3 +17,11 @@ layout: cover
 layout: cover
 ---
 # Be nice to each other
+
+---
+layout: center
+---
+
+# thank you!
+
+<img src="/images/qr.png" class="w-40 pt-10 relative right-0" />
