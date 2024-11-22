@@ -49,10 +49,12 @@ src: slides/06_as_a_developer_focus_on_users.md
 ---
 
 ---
+hide: true
 src: slides/07_as_a_tester_dry.md
 ---
 
 ---
+hide: true
 src: slides/08_as_a_developer_make_your_product_testable.md
 ---
 

@@ -10,6 +10,7 @@ share what you've learned
 <!-- 
 - and finally there are things that we can all do that help us do a good job
 - when an incident happens, organize a blameless post mortem meeting
+- [explain post mortem meeting]
 - analyze the impact and cooperate to create a prevention measures
 - share your code and brainstorm together
 - don’t be afraid to invite someone to a meeting just because it might get too technical
@@ -30,4 +31,4 @@ layout: center
 
 <img src="/images/qr.png" class="w-40 pt-10 relative right-0" />
 
-Get the slides
+Connect with me!
