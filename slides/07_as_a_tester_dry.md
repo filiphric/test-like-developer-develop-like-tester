@@ -1,7 +1,11 @@
 ---
 layout: cover
 ---
-# As a tester, DRY
+# As a tester:
+
+::span{class="text-4xl line-height-normal block"}
+DRY (don't repeat yourself)
+::
 
 <!-- 
 - you are probably well familiar with this principle
@@ -16,7 +20,11 @@ layout: cover
 ---
 layout: cover
 ---
-# As a tester, DRY
+# As a tester:
+
+::span{class="text-4xl line-height-normal block"}
+DRY (don't repeat yourself)
+::
 
 <!-- 
 - DRY principle sometimes serves this goal well, but there’s actually more to it than not writing the same function twice

@@ -2,7 +2,11 @@
 layout: cover
 ---
 
-# **As a tester: Learn to understand the code of the application you are testing**
+# As a tester: 
+
+::span{class="text-4xl line-height-normal block"}
+Learn to understand the code of the application you are testing
+::
 
 <!--
 - it’s pretty obvious, that developers understand the code they are writing
@@ -28,6 +32,7 @@ layout: center
 
 ---
 layout: center
+hide: true
 ---
 
 <img src="/images/shoe_failed.png" class="h-lg" />
@@ -39,6 +44,7 @@ layout: center
 
 ---
 layout: center
+hide: true
 ---
 
 <img src="/images/shoe_devtools.png" class="h-lg" />
@@ -95,6 +101,7 @@ layout: center
 
 ---
 layout: center
+hide: true
 ---
 
 # Rise of AI

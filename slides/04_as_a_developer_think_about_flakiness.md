@@ -2,9 +2,13 @@
 layout: cover
 ---
 
-# **As a developer think about flakiness**
+# As a developer:
+::span{class="text-4xl line-height-normal block"}
+think about flakiness
+::
 
 <!--
+- let’s turn our attention to developers now, because they have some stuff to learn from testers too. mostly, when it comes to test automation and code stability
 - flakiness is something that’s being talked about with testers
 - mostly flakiness in test automation
 - makes sense, flakiness happens often when we want run an automated check and we get uncertain results
@@ -16,7 +20,10 @@ layout: cover
 layout: cover
 ---
 
-# **As a developer think about flakiness**
+# As a developer:
+::span{class="text-4xl line-height-normal block"}
+think about flakiness
+::
 
 <!--
 - flakiness can come from many sources
@@ -28,203 +35,223 @@ layout: cover
 ---
 layout: two-cols
 ---
-```js {*|3}
-it('adds a product to cart', () => {
-  cy.visit('/')
-  cy.wait(1000)
-  cy.contains('Add to Cart').should('be.visible').click()
-  cy.contains('Product added to cart!').should('be.visible')
+
+# DOM flakiness
+
+```js {*|3-4|*}
+it('finds the word "bugs" on a card item', () => {
+  cy,visit('/board/1')
+  cy.get('[data-cy=card]')
+    .eq(0)
+    .should('contain.text', 'bugs')
 })
 ```
-
 ::right::
-<img src="/images/shoe_failed.png" class="relative top-[10%]" />
+<div v-click.hide=2>
+  <img src="/images/selecting_elements.png" class="absolute w-160"/>
+</div>
+<img src="/images/selecting_elements_2.png" class="absolute w-160" v-click.show=2 />
 
-<!--
-- let’s go back to our example with a sneaker ecommerce site
-- we have a Cypress test that attempts to buy a sneaker
-- flaky - fails and passes
-- when fails - we see we click the button too soon
-- fixing on the test - add waiting so the test does not go that fast (`cy.wait(1000)`)
-- but this is a slippery slope, because we may be increaing that time, not fixing the real problem
+<!-- 
+- let’s talk about DOM flakiness first
+- consider the following scenario. You want to select a card (the white element on the page) and assert its text
+- Notice how both of these elements contain the word "bugs" inside. Can you tell which card are we going to select when using this code?
+- You might be guessing the first one, with the text "triage found bugs"
+- [click] the reasoning might be, because we select the card element and filter the first one. While that may be a good answer it’s not the most precise one. 
+- Correctly it is - whichever card will load first
+- [click] consider if at time of the execution of these commands, our app would look like this
+- we’d still select card elements, we’d still filter the first one and make our assertion
+ -->
+
+
+---
+layout: default
+---
+
+# DOM flakiness
+
+<img src="/images/app_tests.png" class="w-140 m-auto" />
+
+<!-- 
+- if we ignore what the app is doing, there’s a high chance our test not doing what we expect, and therefore leading to flaky results
+- this ties to the graphic I showed before, where these two cog wheels start to grind, or not even move properly
 -->
-
-<style>
-.two-columns {
-  gap: 1rem;
-  grid-template-columns: 3fr 5fr !important;
-}
-
-.slidev-code-wrapper {
-  padding-top: 35%
-}
-</style>
-
----
-layout: center
-disabled: true
----
-<span class="text-size-4xl font-bold"><span class="invisible">What happens in</span>CI<span class="invisible">stays in</span>CI</span>
-
-<Arrow x1="545" y1="240" x2="525" y2="290" />
-<Arrow x1="720" y1="240" x2="745" y2="290" />
-&nbsp;
-# What happens in <span v-mark.strike=0>Vegas</span> stays in <span v-mark.strike=0>Vegas</span>
 
 ---
 layout: two-cols
 ---
-# What do we know
-- test opens page and clicks on "Add to cart" button
-- test sometimes passes and sometimes fails
-- test seems to click the "Add to cart" button too soon
-- test runs ok locally but fails on CI
-- our app uses REST API to fetch data
+
+# DOM flakiness
+
+<div class="h-full relative">
+  <div class='absolute top-35 w-full'>
+````md magic-move
+```js
+it('finds the word "bugs" on a card item', () => {
+  cy,visit('/board/1')
+  cy.get('[data-cy=card]')
+    .eq(0)
+    .should('contain.text', 'bugs')
+})
+```
+```js
+it('finds the word "bugs" on a card item', () => {
+  cy.visit('/board/1')
+  cy.get('[data-cy=card]')
+    .should('have.length', 2)
+    .eq(0)
+    .should('contain.text', 'bugs')
+})
+```
+````
+  </div>
+</div>
 
 ::right::
-<img src="/images/shoe_failed.png" class="relative top-[20%]" />
-
-<style>
-.two-columns {
-  gap: 1rem;
-  grid-template-columns: 3fr 5fr !important;
-}
-
-</style>
+<img src="/images/selecting_elements.png" class="absolute w-107"/>
 
 <!-- 
-- so let’s put our developer hats on for a moment
-- we are going to dive into the code and figure out what actually made the test flaky
+- so what is the solution?
+- there’s no one size fits all, but my recommendation would be to add a level of determinism to your test
+- [click] one solution would be to add assertions to your tests that will serve as checkpoints - places where your app and test are in complete sync
+- these will pretty much make sure that the test is not moving faster than the app or vice versa
+- the example checks number of elements, but this could be assertion on loaders no longer existing, API request responding, element appearing and so on
+-->
+
+---
+layout: two-cols
+---
+
+# Network flakiness
+
+<div class="h-full relative">
+  <div class='absolute top-15 w-full'>
+
+```js {*|3|5-6|8-9|11-12|*|3,8-9}
+it('add a todo item', () => {
+
+  cy.visit('/')
+
+  cy.get('[data-test="todo-item"]')
+    .should('have.length', 0)
+
+  cy.get('[data-test=new-todo]')
+    .type('create code examples{enter}')
+
+  cy.get('[data-test="todo-item"]')
+    .should('have.length', 1)
+  
+});
+```
+
+  </div>
+</div>
+
+::right::
+
+<img src="/images/todos.png" class="absolute w-110 top-40" v-click.hide=6 />
+<img src="/images/api_calls.png" class="absolute w-110 top-65" v-click.show=6 />
+
+<!-- 
+- in this example we have a very simple test with a todo app
+- we want to test adding a new todo item, so we:
+- [click] visit the app
+- [click] check whether there are 0 items
+- [click] add a new todo item
+- [click] check that there is now exactly one
+- [click] but as you might have guessed it there’s a hidden problem when it comes to playing nicely with our network
+- [click] along the test run, there are two moments when an API call is made
+- one is when we open the app under test, the other one is when we create a todo
+- GET request fetches all the todo items from the database and happens when we visit the application
+- POST request creates a new todo item
+- this test is flaky, and it’s because we don’t really take network into account
 -->
 
 ---
 layout: default
 ---
 
-parent component:
-````md magic-move
-```tsx
-<Counter quantity={quantity} setQuantity={setQuantity} />
-<AddToCartButton onClick={addToCart} />
-```
-```tsx
-<Counter quantity={quantity} setQuantity={setQuantity} />
-<AddToCartButton onClick={addToCart} isDisabled={quantity === 0} />
-```
-````
+# Network flakiness
 
-button component:
-````md magic-move
-```tsx
-interface AddToCartButtonProps {
-  onClick: () => void;
-}
+<img src="/images/test_1.png" class="absolute w-210 top-40" v-click="[0, 1]" />
+<img src="/images/test_2.png" class="absolute w-210 top-40" v-click="[1, 2]" />
+<img src="/images/test_3.png" class="absolute w-210 top-40" v-click="[2, 3]" />
+<img src="/images/test_4.png" class="absolute w-210 top-40" v-click="3" />
 
-const AddToCartButton = ({ onClick }: AddToCartButtonProps) => (
-  <button 
-    className='bg-pink-500 text-white font-semibold text-2xl px-4 py-2 rounded-sm my-4'
-    onClick={onClick} >
-    Add to Cart
-  </button>
-);
-
-export default AddToCartButton;
-```
-```tsx
-interface AddToCartButtonProps {
-  onClick: () => void;
-  isDisabled: boolean;
-}
-
-const AddToCartButton = ({ onClick, isDisabled }: AddToCartButtonProps) => (
-  <button 
-    className='bg-pink-500 text-white font-semibold text-2xl px-4 py-2 rounded-sm my-4'
-    onClick={onClick} >
-    Add to Cart
-  </button>
-);
-
-export default AddToCartButton;
-```
-```tsx
-interface AddToCartButtonProps {
-  onClick: () => void;
-  isDisabled: boolean;
-}
-
-const AddToCartButton = ({ onClick, isDisabled }: AddToCartButtonProps) => (
-  <button 
-    className='bg-pink-500 text-white font-semibold text-2xl px-4 py-2 rounded-sm my-4'
-    onClick={onClick}
-    disabled={isDisabled} >
-    Add to Cart
-  </button>
-);
-
-export default AddToCartButton;
-```
-```tsx
-interface AddToCartButtonProps {
-  onClick: () => void;
-  isDisabled: boolean;
-}
-
-const AddToCartButton = ({ onClick, isDisabled }: AddToCartButtonProps) => (
-  <button 
-    className='bg-pink-500 text-white font-semibold text-2xl px-4 py-2 rounded-sm my-4 disabled:opacity-20'
-    onClick={onClick}
-    disabled={isDisabled} >
-    Add to Cart
-  </button>
-);
-
-export default AddToCartButton;
-```
-````
-
-
-<!--
-- let’s add a new property
-- [click] when the number is anything else than 0, isDisabled will be false
-- [click] add it to our button as well
-- [click] we’ll add an html attribute
-- [click] and then add some styling so it’s semi transparent
+<!-- 
+- let me show you what goes on in the tests, this is the timeline
+- [click] we have an assertion that checks that there are no items in our list
+- [click] the items in our list get loaded from API. when app opens, it will call the api
+- [click] the problem occurs when the response takes a little longer, and our assertion happens way too early
+- we obviously cannot have only single item in our list, if the response returns anything else than zero
 -->
 
 ---
-layout: default
+layout: two-cols
 ---
 
+# Network flakiness
+
+<div class="h-full relative">
+  <div class='absolute top-5 w-full'>
+
 ````md magic-move
-```js
-it('adds a product to cart', () => {
-  cy.visit('/');
-  cy.wait(1000);
-  cy.contains('Add to Cart').should('be.visible').click();
-  cy.contains('Product added to cart!').should('be.visible');
+```js {3,4,8}
+it('add a todo item', () => {
+
+  cy.intercept('GET', '/api/todos')
+    .as('todos')
+
+  cy.visit('/')
+
+  cy.wait('@todos')
+
+  cy.get('[data-test="todo-item"]')
+    .should('have.length', 0)
+
+  cy.get('[data-test=new-todo]')
+    .type('create code examples{enter}')
+
+  cy.get('[data-test="todo-item"]')
+    .should('have.length', 1)
+  
 });
 ```
-```js
-it('adds a product to cart', () => {
-  cy.visit('/');
-  cy.contains('Add to Cart').should('be.visible').click();
-  cy.contains('Product added to cart!').should('be.visible');
+```js {3,4,8}
+it('add a todo item', () => {
+
+  cy.intercept('GET', '/api/todos', [])
+    .as('todos')
+
+  cy.visit('/')
+
+  cy.wait('@todos')
+
+  cy.get('[data-test="todo-item"]')
+    .should('have.length', 0)
+
+  cy.get('[data-test=new-todo]')
+    .type('create code examples{enter}')
+
+  cy.get('[data-test="todo-item"]')
+    .should('have.length', 1)
+  
 });
 ```
 ````
 
-<style>
-.slidev-code-wrapper {
-  padding-top: 20%
-}
-</style>
+  </div>
+</div>
 
-<!--
-- as a result, our test code becomes cleaner
-- and this is what you should do as a developer who owns test flakines
-- it accomplishes two things:
-  - fixes hidden issues that customers actually have but never report
-  - makes test automation more stable and therefore more reliable
-- I am very confident that more than 90% of what we call flaky test is actually a flaky app, it has nothing to do with the test code itself
-- this is FINE
+::right::
+
+<img src="/images/todos.png" class="absolute w-110 top-40" />
+
+<!-- 
+- an answer to this type of flakiness is obviously not ignoring the network layer
+- one of the solutions as you can see here is intercepting the said API request and waiting for it
+- [click] in this case we should probably take it a level further
+- since we want to create the very first item, we can mock the empty state, like we do here with an empty array
+- this is one way of eliminating network flakiness, there’s obviously more
+- the bottom line is that when it comes to network layer, it should not be ignored, especially if we want to avoid test flakiness
 -->

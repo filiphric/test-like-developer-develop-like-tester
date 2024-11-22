@@ -1,7 +1,11 @@
 ---
 layout: cover
 ---
-# As both testers and developers, share what you ve learned
+# As tester and developer:
+
+::span{class="text-4xl line-height-normal block"}
+share what you've learned
+::
 
 <!-- 
 - and finally there are things that we can all do that help us do a good job
@@ -25,3 +29,5 @@ layout: center
 # thank you!
 
 <img src="/images/qr.png" class="w-40 pt-10 relative right-0" />
+
+Get the slides

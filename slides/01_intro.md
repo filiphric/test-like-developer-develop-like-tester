@@ -47,17 +47,3 @@ layout: center
 
 Living in both of these worlds at the same time got me thinking - why have these two roles fallen apart so much?
 -->
----
-layout: center
----
-
-# Developers vs. testers
-
-<!--
-- my personal experience being both development and testing, I definitely see some differences.
-
-- As a tester, I try to think about the system as a whole, 
-  - different inputs, and outputs, and risks.
-  - all the things that could happen
-  - different contexts in which the app is going to be used
--->

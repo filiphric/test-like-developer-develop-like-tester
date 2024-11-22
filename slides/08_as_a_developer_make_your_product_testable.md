@@ -1,7 +1,11 @@
 ---
 layout: cover
 ---
-# As a developer make your product testable
+# As a developer:
+
+::span{class="text-4xl line-height-normal block"}
+make your product testable
+::
 
 <!-- 
 - I’m going to circle back on the idea of shift left
@@ -11,7 +15,11 @@ layout: cover
 ---
 layout: cover
 ---
-# As a developer make your product testable
+# As a developer:
+
+::span{class="text-4xl line-height-normal block"}
+make your product testable
+::
 
 <!-- 
 - maybe as a tester you have been in situations when suddenly all your test failed
@@ -25,7 +33,11 @@ layout: cover
 ---
 layout: cover
 ---
-# As a developer make your product testable
+# As a developer:
+
+::span{class="text-4xl line-height-normal block"}
+make your product testable
+::
 
 <!-- 
 - so what can you do?

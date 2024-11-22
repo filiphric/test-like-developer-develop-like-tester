@@ -1,7 +1,11 @@
 ---
 layout: cover
 ---
-# As a developer, focus on users
+# As a developer:
+
+::span{class="text-4xl line-height-normal block"}
+focus on users
+::
 
 <!-- 
 - [click]two my friend Andy talked about shifting left and shifting right
@@ -13,7 +17,11 @@ layout: cover
 ---
 layout: cover
 ---
-# As a developer, focus on users
+# As a developer:
+
+::span{class="text-4xl line-height-normal block"}
+focus on users
+::
 
 <!-- 
 - testers are well aware of this - going through bug reports assessing severity, finding out how many people were affected by a defect in the app - we feel the pain of our users

@@ -1,7 +1,11 @@
 ---
 layout: cover
 ---
-# As a tester: treat your test automation as development
+# As a tester: 
+
+::span{class="text-4xl line-height-normal block"}
+treat your test automation as development
+::
 
 <!-- 
 - I’ve seen test automation code being treated as second class citizen
@@ -27,6 +31,7 @@ layout: center
 layout: center
 ---
 # Test automation is development
+
 <!-- 
 - you are both developer and tester
 - and you should start treating yourself as such
@@ -60,6 +65,7 @@ layout: default
 ---
 layout: default
 ---
+
 # Taking your code to another level
 - code formatters
   - eslint, prettier
